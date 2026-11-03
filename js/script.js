@@ -134,3 +134,69 @@ function calculerMoyenne(notes) {
 }
 
 
+const filtreGroupe = document.querySelector("#filtre-groupe");
+
+groupes.forEach(function (groupe) {
+
+    const option = document.createElement("option");
+    option.value = groupe.id;
+    option.textContent = groupe.nom;
+    filtreGroupe.append(option);
+});
+
+
+filtreGroupe.addEventListener("change", function () {
+
+    const groupeSelectionne = filtreGroupe.value;
+    const elevesFiltres = eleves.filter(function (eleve) {
+
+        return groupeSelectionne === "" ||
+            String(eleve.groupeId) === groupeSelectionne;
+
+    });
+    listeEleves.replaceChildren();
+
+    const lignes = elevesFiltres.map(function (eleve) {
+        return creerLigne(eleve);
+    });
+
+    listeEleves.append(...lignes);
+
+    compteur.textContent = `${elevesFiltres.length} élèves`;
+});
+
+
+const recherche = document.querySelector("#recherche");
+const tri = document.querySelector("#tri");
+
+
+function afficherEleves() {
+
+    const groupeSelectionne = filtreGroupe.value;
+    const motRecherche = recherche.value.toLowerCase();
+
+    const elevesFiltres = eleves.filter(function (eleve) {
+
+        return (groupeSelectionne === "" ||
+            String(eleve.groupeId) === groupeSelectionne)
+            &&
+            (eleve.prenom + " " + eleve.nom).toLowerCase().includes(motRecherche);
+        
+    });
+    listeEleves.replaceChildren();
+
+    const lignes = elevesFiltres.map(function (eleve) {
+        return creerLigne(eleve);
+    });
+
+    listeEleves.append(...lignes);
+
+    compteur.textContent = `${elevesFiltres.length} élèves`;
+   
+        aucunResultat.hidden = elevesFiltres.length > 0;
+
+}
+
+filtreGroupe.addEventListener("change", afficherEleves);
+recherche.addEventListener("input", afficherEleves);
+tri.addEventListener("change", afficherEleves);
