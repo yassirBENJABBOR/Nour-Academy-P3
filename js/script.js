@@ -167,6 +167,7 @@ filtreGroupe.addEventListener("change", function () {
 
 
 const recherche = document.querySelector("#recherche");
+const tri = document.querySelector("#tri");
 
 
 function afficherEleves() {
@@ -192,7 +193,10 @@ function afficherEleves() {
 
     compteur.textContent = `${elevesFiltres.length} élèves`;
    
+        aucunResultat.hidden = elevesFiltres.length > 0;
+
 }
 
 filtreGroupe.addEventListener("change", afficherEleves);
 recherche.addEventListener("input", afficherEleves);
+tri.addEventListener("change", afficherEleves);
