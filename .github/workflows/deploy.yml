@@ -1,3 +1,4 @@
+
 name: Deploy to GitHub Pages
 
 on:
@@ -28,7 +29,10 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Fix Vite permissions
+        run: chmod +x node_modules/.bin/vite
 
       - name: Build
         run: npm run build
