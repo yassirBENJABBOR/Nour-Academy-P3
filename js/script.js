@@ -200,3 +200,6 @@ function afficherEleves() {
 filtreGroupe.addEventListener("change", afficherEleves);
 recherche.addEventListener("input", afficherEleves);
 tri.addEventListener("change", afficherEleves);
+
+
+
