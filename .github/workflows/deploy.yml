@@ -37,6 +37,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check dist files
+        run: |
+          ls -lah dist
+          ls -lah dist/assets
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
