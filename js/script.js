@@ -95,7 +95,7 @@ function creerLigne(eleve) {
     inputNote.step = "0.5";
     inputNote.placeholder = "Note";
 
-    inputNote.classList.add("h-11","w-full","rounded-full","border","border-line","bg-paper","px-4","text-sm","lg:w-24");
+    inputNote.classList.add("input-note","h-11","w-full","rounded-full","border","border-line","bg-paper","px-4","text-sm","lg:w-24");
     labelNote.append(texteCache, inputNote);
 
     const boutonNote = document.createElement("button");
@@ -200,10 +200,12 @@ function afficherEleves() {
 filtreGroupe.addEventListener("change", afficherEleves);
 recherche.addEventListener("input", afficherEleves);
 
+
+
 listeEleves.addEventListener("click", function (event) {
 
-    const boutonAbsent = event.target.closest(".btn-absent");
-
+    const boutonAbsent = event.target.closest(".btn-absent")
+    
     if (boutonAbsent) {
         const ligne = boutonAbsent.closest("li");
         const id = ligne.dataset.id;
@@ -215,8 +217,31 @@ listeEleves.addEventListener("click", function (event) {
         ligne.replaceWith(creerLigne(eleve));
     }
 
+    const boutonNote = event.target.closest(".btn-note")
+    if (boutonNote){
+        const ligne = boutonNote.closest("li")
+        const id =ligne.dataset.id
+        const eleve= eleves.find(function(item){
+            return String(item.id) === id;
+        })
+
+
+        const noteinput = ligne.querySelector(".input-note")
+    const valeurNote = noteinput.value;
+        const note = Number(valeurNote);
+        if (valeurNote === "") {
+            alert("Veuillez saisir une note");
+        }else if (note < 0 || note > 20) {
+            alert("La note doit être entre 0 et 20");
+        }else {
+            eleve.notes.push(note);
+            ligne.replaceWith(creerLigne(eleve));
+            console.log(eleve.notes);
+            
+        }
+
+    }
+
 });
-
-
 
 
