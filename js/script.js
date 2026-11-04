@@ -167,8 +167,8 @@ filtreGroupe.addEventListener("change", function () {
 
 
 const recherche = document.querySelector("#recherche");
-const tri = document.querySelector("#tri");
 
+const aucunResultat = document.querySelector("#aucun-resultat");
 
 function afficherEleves() {
 
@@ -199,7 +199,24 @@ function afficherEleves() {
 
 filtreGroupe.addEventListener("change", afficherEleves);
 recherche.addEventListener("input", afficherEleves);
-tri.addEventListener("change", afficherEleves);
+
+listeEleves.addEventListener("click", function (event) {
+
+    const boutonAbsent = event.target.closest(".btn-absent");
+
+    if (boutonAbsent) {
+        const ligne = boutonAbsent.closest("li");
+        const id = ligne.dataset.id;
+        const eleve = eleves.find(function (item) {
+            return String(item.id) === id;
+        });
+        console.log(eleve);
+        eleve.absences += 1;
+        ligne.replaceWith(creerLigne(eleve));
+    }
+
+});
+
 
 
 
