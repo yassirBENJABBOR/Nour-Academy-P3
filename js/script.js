@@ -246,11 +246,6 @@ listeEleves.addEventListener("click", function (event) {
 
 
 
-const formEleve = document.querySelector("#form-eleve");
-
-
-const formSucces = document.querySelector("#form-succes");
-const formErreur = document.querySelector("#form-erreur");
 
 const regexNom = /^[A-Za-zÀ-ÿ\s-]{2,}$/;
 const prenomMsg = document.querySelector("#prenom-msg");
@@ -491,4 +486,130 @@ groupeInput.addEventListener("change", function () {
         groupeMsg.classList.remove("hidden");
 
     }
+});
+
+const formEleve = document.querySelector("#form-eleve");
+const formSucces = document.querySelector("#form-succes");
+const formErreur = document.querySelector("#form-erreur");
+
+function formulaireValide() {
+    const champsValides = [
+        regexNom.test(prenomInput.value.trim()),
+        regexNom.test(nomInput.value.trim()),
+        groupeInput.value !== "",
+        regexEmail.test(emailInput.value.trim()),
+        regexTelephone.test(telephoneInput.value.trim()),
+        regexCode.test(codeInput.value)
+    ];
+
+    return champsValides.every(function (valide) {
+        return valide === true;
+    });
+}
+
+formEleve.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    if (!formulaireValide()) {
+        if (!regexNom.test(prenomInput.value.trim())) {
+            prenomInput.focus();
+        prenomMsg.textContent = "Veuillez remplir le prénom.";
+        prenomMsg.classList.remove("hidden");
+    
+        prenomChamp.classList.add("erreur");
+        prenomChamp.classList.remove("valide");
+        prenomInput.classList.remove("border-ok");
+        prenomInput.classList.add("border-alert");
+
+
+        } else if (!regexNom.test(nomInput.value.trim())) {
+            nomInput.focus();
+        nomMsg.textContent = "Veuillez remplir le nom.";
+        nomMsg.classList.remove("hidden");
+        nomChamp.classList.add("erreur");
+        nomChamp.classList.remove("valide");
+
+        nomInput.classList.remove("border-ok");
+        nomInput.classList.add("border-alert");
+
+
+        } else if (groupeInput.value === "") {
+            groupeInput.focus();
+            groupeMsg.textContent = "Veuillez choisir un groupe.";
+        groupeChamp.classList.add("erreur");
+        groupeChamp.classList.remove("valide");
+        groupeMsg.classList.remove("hidden");
+
+        groupeInput.classList.add("border-alert");
+        groupeInput.classList.remove("border-ok");
+
+
+        } else if (!regexEmail.test(emailInput.value.trim())) {
+            emailInput.focus();
+            emailMsg.textContent = "Veuillez remplir l'email.";
+        emailChamp.classList.add("erreur");
+        emailChamp.classList.remove("valide");
+        emailMsg.classList.remove("hidden");
+
+
+        emailInput.classList.remove("border-ok");
+        emailInput.classList.add("border-alert");
+        } else if (!regexTelephone.test(telephoneInput.value.trim())) {
+            telephoneInput.focus();
+            telephoneMsg.textContent = "Veuillez remplir le téléphone.";
+        telephoneMsg.classList.remove("hidden");
+        telephoneChamp.classList.add("erreur");
+        telephoneChamp.classList.remove("valide");
+
+        telephoneInput.classList.remove("border-ok");
+        telephoneInput.classList.add("border-alert");
+
+        } else if (!regexCode.test(codeInput.value)) {
+            codeInput.focus();
+            codeMsg.textContent = "Veuillez remplir le code.";
+
+        codeChamp.classList.add("erreur");
+        codeMsg.classList.remove("hidden");
+        codeChamp.classList.remove("valide");
+        codeInput.classList.remove("border-ok");
+        codeInput.classList.add("border-alert");
+
+        }
+
+        return;
+    }
+    const doublon = eleves.some(function (eleve) {
+        return (
+            eleve.prenom.trim().toLowerCase() === prenomInput.value.trim().toLowerCase() &&
+            eleve.nom.trim().toLowerCase() === nomInput.value.trim().toLowerCase() &&
+            eleve.groupeId === Number(groupeInput.value)
+        );
+    });
+
+    if (doublon) {
+        formErreur.textContent = "Cet élève existe déjà dans ce groupe.";
+        formErreur.hidden = false;
+        formSucces.hidden = true;        return;
+    }
+    console.log("Tous les champs sont valides !");
+
+    const nouvelEleve = {
+        id: Date.now(),
+        prenom: prenomInput.value.trim(),
+        nom: nomInput.value.trim(),
+        groupeId: Number(groupeInput.value),
+        email: emailInput.value.trim(),
+        telephone: telephoneInput.value.trim(),
+        absences: 0,
+        notes: []
+    };
+
+    eleves.push(nouvelEleve);
+
+    formSucces.hidden = false;
+    formErreur.hidden = true;   
+
+    formEleve.reset();
+    afficherEleves();
+
 });
