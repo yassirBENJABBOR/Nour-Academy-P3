@@ -215,6 +215,7 @@ listeEleves.addEventListener("click", function (event) {
         console.log(eleve);
         eleve.absences += 1;
         ligne.replaceWith(creerLigne(eleve));
+        afficherBilan()
     }
 
     const boutonNote = event.target.closest(".btn-note")
@@ -236,6 +237,8 @@ listeEleves.addEventListener("click", function (event) {
         }else {
             eleve.notes.push(note);
             ligne.replaceWith(creerLigne(eleve));
+            afficherBilan();
+
             console.log(eleve.notes);
             
         }
@@ -648,3 +651,93 @@ function reinitialiserValidation() {
     codeInput.type = "password";
     toggleCode.textContent = "👁️";
 }
+
+
+const bilanMoyenne = document.querySelector("#bilan-moyenne");
+const aucuneAlerte = document.querySelector("#aucune-alerte");
+
+function calculerMoyenneGenerale() {
+    const sommeNotes = eleves.reduce(function (total, eleve) {
+        const sommeEleve = eleve.notes.reduce(function (somme, note) {
+            return somme + note;
+        }, 0);
+
+        return total + sommeEleve;
+    }, 0);
+    const nombreNotes = eleves.reduce(function (total, eleve) {
+        return total + eleve.notes.length;
+    }, 0);
+    if (nombreNotes === 0) {
+        return "—";
+    }
+
+    return (sommeNotes / nombreNotes).toFixed(2).replace(".", ",");
+}
+const bilanAbsences = document.querySelector("#bilan-absences");
+function calculerTotalAbsences() {
+  return eleves.reduce(function (total, eleve) {
+    return total + eleve.absences;
+  }, 0);
+}
+
+const bilanAlertes = document.querySelector("#bilan-alertes");
+function calculerNombreAlertes() {
+    return eleves.filter(function (eleve) {
+        return eleve.absences >= 3;
+    }).length;
+}
+const bilanMeilleur = document.querySelector("#bilan-meilleur");
+
+function trouverMeilleurEleve() {
+    return eleves.reduce(function (meilleur, eleve) {
+        if (eleve.notes.length === 0) {
+            return meilleur;
+        }
+        const moyenneEleve = eleve.notes.reduce(function (total, note) {
+            return total + note;
+        }, 0) / eleve.notes.length;
+        if (meilleur === null) {
+            return eleve;
+        }
+        const moyenneMeilleur = meilleur.notes.reduce(function (total, note) {
+            return total + note;
+        }, 0) / meilleur.notes.length;
+
+        return moyenneEleve > moyenneMeilleur ? eleve : meilleur;
+    }, null);
+}
+
+const listeParents = document.querySelector("#liste-parents");
+function afficherParentsAAppeler() {
+    const elevesEnAlerte = eleves.filter(function (eleve) {
+        return eleve.absences >= 3;
+    })
+    listeParents.replaceChildren();
+    elevesEnAlerte.forEach(function (eleve) {
+        const li = document.createElement("li");
+        li.classList.add("rounded-xl","bg-card","px-3","py-2","ring-1","ring-line")
+        li.textContent = `${eleve.prenom} ${eleve.nom} — ${eleve.telephoneParent || eleve.telephone || "Téléphone non disponible"}`;
+        listeParents.append(li)
+    });
+
+    aucuneAlerte.hidden = elevesEnAlerte.length > 0;
+}
+
+function afficherBilan() {
+    bilanMoyenne.textContent = calculerMoyenneGenerale();
+    bilanAbsences.textContent = calculerTotalAbsences();
+    bilanAlertes.textContent = calculerNombreAlertes();
+
+    const meilleur = trouverMeilleurEleve();
+    if (meilleur === null) {
+        bilanMeilleur.textContent = "Aucune note";
+    } else {
+        bilanMeilleur.textContent =
+            `${meilleur.prenom} ${meilleur.nom} — ${calculerMoyenne(meilleur.notes)} / 20`;
+    }
+
+      afficherParentsAAppeler()
+
+
+}
+afficherBilan() 
