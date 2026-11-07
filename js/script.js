@@ -593,6 +593,17 @@ formEleve.addEventListener("submit", function (event) {
     }
     console.log("Tous les champs sont valides !");
 
+    const nombreEleves = eleves.filter(function (eleve) {
+        return eleve.groupeId === Number(groupeInput.value);
+    }).length;
+
+    if (nombreEleves >= 15) {
+        formErreur.textContent = "Ce groupe est complet (15 élèves).";
+        formErreur.hidden = false;
+        formSucces.hidden = true;
+        return;
+    }
+
     const nouvelEleve = {
         id: Date.now(),
         prenom: prenomInput.value.trim(),
@@ -610,6 +621,30 @@ formEleve.addEventListener("submit", function (event) {
     formErreur.hidden = true;   
 
     formEleve.reset();
+    reinitialiserValidation()
     afficherEleves();
 
 });
+
+function reinitialiserValidation() {
+
+    const champs = [
+        [prenomInput, prenomChamp, prenomMsg],
+        [nomInput, nomChamp, nomMsg],
+        [emailInput, emailChamp, emailMsg],
+        [telephoneInput, telephoneChamp, telephoneMsg],
+        [codeInput, codeChamp, codeMsg],
+        [groupeInput, groupeChamp, groupeMsg]
+    ];
+
+    champs.forEach(function ([input, champ, message]) {
+        champ.classList.remove("erreur", "valide");
+        input.classList.remove("border-alert", "border-ok");
+        message.classList.add("hidden");
+    });
+
+    codeForce.value = 0;
+
+    codeInput.type = "password";
+    toggleCode.textContent = "👁️";
+}
