@@ -245,3 +245,406 @@ listeEleves.addEventListener("click", function (event) {
 });
 
 
+
+
+const regexNom = /^[A-Za-zÀ-ÿ\s-]{2,}$/;
+const prenomMsg = document.querySelector("#prenom-msg");
+const prenomInput = document.querySelector("#prenom");
+
+const prenomChamp = prenomInput.closest(".champ");
+
+prenomInput.addEventListener("input", function () {
+    if (prenomInput.value.trim() === "") {
+        prenomMsg.textContent = "Veuillez remplir le prénom.";
+        prenomMsg.classList.remove("hidden");
+
+        prenomChamp.classList.add("erreur");
+        prenomChamp.classList.remove("valide");
+
+        prenomInput.classList.remove("border-ok");
+        prenomInput.classList.add("border-alert");
+    } else if (!regexNom.test(prenomInput.value)) {
+        prenomMsg.textContent = "2 caractères minimum : lettres, espaces ou tirets.";
+        prenomMsg.classList.remove("hidden");
+        prenomChamp.classList.add("erreur");
+        prenomChamp.classList.remove("valide");
+
+        prenomInput.classList.remove("border-ok");
+        prenomInput.classList.add("border-alert");
+    } else {
+        prenomMsg.textContent = "Prénom valide.";
+        prenomMsg.classList.remove("hidden");
+        prenomChamp.classList.add("valide");
+        prenomChamp.classList.remove("erreur");
+
+        prenomInput.classList.remove("border-alert");
+        prenomInput.classList.add("border-ok");
+    }
+    
+});
+
+const nomInput = document.querySelector("#nom");
+const nomMsg = document.querySelector("#nom-msg");
+const nomChamp = nomInput.closest(".champ");
+nomInput.addEventListener("input", function () {
+
+    if (nomInput.value.trim() === "") {
+
+        nomMsg.textContent = "Veuillez remplir le nom.";
+        nomMsg.classList.remove("hidden");
+        nomChamp.classList.add("erreur");
+        nomChamp.classList.remove("valide");
+
+        nomInput.classList.remove("border-ok");
+        nomInput.classList.add("border-alert");
+    } else if (!regexNom.test(nomInput.value)) {
+        nomMsg.textContent = "2 caractères minimum : lettres, espaces ou tirets.";
+
+        nomChamp.classList.add("erreur");
+        nomChamp.classList.remove("valide");
+        nomMsg.classList.remove("hidden");
+
+        nomInput.classList.remove("border-ok");
+        nomInput.classList.add("border-alert");
+    } else {
+        nomMsg.textContent = "Nom valide.";
+        nomMsg.classList.remove("hidden");
+        nomChamp.classList.add("valide");
+        nomChamp.classList.remove("erreur");
+
+        nomInput.classList.remove("border-alert");
+        nomInput.classList.add("border-ok");
+    }
+});
+
+
+const emailInput = document.querySelector("#email");
+const emailMsg = document.querySelector("#email-msg");
+const emailChamp = emailInput.closest(".champ");
+
+const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+emailInput.addEventListener("input", function () {
+    if (emailInput.value.trim() === "") {
+        emailMsg.textContent = "Veuillez remplir l'email.";
+        emailChamp.classList.add("erreur");
+        emailChamp.classList.remove("valide");
+        emailMsg.classList.remove("hidden");
+
+
+        emailInput.classList.remove("border-ok");
+        emailInput.classList.add("border-alert");
+
+    } else if (!regexEmail.test(emailInput.value)) {
+        emailMsg.textContent = "Email invalide.";
+        emailMsg.classList.remove("hidden");
+        emailChamp.classList.add("erreur");
+        emailChamp.classList.remove("valide");
+
+        emailInput.classList.remove("border-ok");
+        emailInput.classList.add("border-alert");
+
+    } else {
+        emailMsg.textContent = "Email valide.";
+        emailChamp.classList.add("valide");
+        emailChamp.classList.remove("erreur");
+        emailMsg.classList.remove("hidden");
+
+        emailInput.classList.remove("border-alert");
+        emailInput.classList.add("border-ok");
+
+    }
+});
+
+
+const telephoneInput = document.querySelector("#telephone");
+const telephoneMsg = document.querySelector("#telephone-msg");
+const telephoneChamp = telephoneInput.closest(".champ");
+
+const regexTelephone = /^(06|07)[0-9]{8}$|^\+212[67][0-9]{8}$/;
+
+telephoneInput.addEventListener("input", function () {
+    if (telephoneInput.value.trim() === "") {
+        telephoneMsg.textContent = "Veuillez remplir le téléphone.";
+        telephoneMsg.classList.remove("hidden");
+        telephoneChamp.classList.add("erreur");
+        telephoneChamp.classList.remove("valide");
+
+        telephoneInput.classList.remove("border-ok");
+        telephoneInput.classList.add("border-alert");
+
+    } else if (!regexTelephone.test(telephoneInput.value.trim())) {
+        telephoneMsg.textContent = "Numéro marocain invalide.";
+
+        telephoneChamp.classList.add("erreur");
+        telephoneChamp.classList.remove("valide");
+        telephoneMsg.classList.remove("hidden");
+        telephoneInput.classList.remove("border-ok");
+        telephoneInput.classList.add("border-alert");
+
+    } else {
+        telephoneMsg.textContent = "Téléphone valide.";
+
+        telephoneChamp.classList.add("valide");
+        telephoneChamp.classList.remove("erreur");
+        telephoneMsg.classList.remove("hidden");
+        telephoneInput.classList.remove("border-alert");
+        telephoneInput.classList.add("border-ok");
+    }
+});
+
+const codeInput = document.querySelector("#code");
+const codeMsg = document.querySelector("#code-msg");
+const codeChamp = codeInput.closest(".champ");
+const codeForce = document.querySelector("#code-force");
+const regexCode = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
+
+
+codeInput.addEventListener("input", function () {
+    if (codeInput.value.trim() === "") {
+        codeMsg.textContent = "Veuillez remplir le code.";
+
+        codeChamp.classList.add("erreur");
+        codeMsg.classList.remove("hidden");
+        codeChamp.classList.remove("valide");
+        codeInput.classList.remove("border-ok");
+        codeInput.classList.add("border-alert");
+
+    } else if (!regexCode.test(codeInput.value)) {
+        codeMsg.textContent = "8 caractères min., 1 majuscule, 1 chiffre, 1 caractère spécial.";
+        codeChamp.classList.add("erreur");
+        codeChamp.classList.remove("valide");
+        codeMsg.classList.remove("hidden");
+
+        codeInput.classList.remove("border-ok");
+        codeInput.classList.add("border-alert");
+
+    } else {
+        codeMsg.textContent = "Code valide.";
+        codeMsg.classList.remove("hidden");
+
+        codeChamp.classList.add("valide");
+        codeChamp.classList.remove("erreur");
+        codeInput.classList.remove("border-alert");
+        codeInput.classList.add("border-ok");
+    }
+        
+    let force = 0;
+
+    if (codeInput.value.length >= 8) force++;
+    if (/[A-Z]/.test(codeInput.value)) force++;
+    if (/[0-9]/.test(codeInput.value)) force++;
+    if (/[^A-Za-z0-9]/.test(codeInput.value)) force++;
+
+    codeForce.value = force;
+        
+});
+
+
+const toggleCode = document.querySelector("#toggle-code");
+
+toggleCode.addEventListener("click", function () {
+
+    if (codeInput.type === "password") {
+        codeInput.type = "text";
+        toggleCode.textContent = "🙈";
+    } else {
+        codeInput.type = "password";
+        toggleCode.textContent = "👁️";
+    }
+
+});
+
+const groupeInput = document.querySelector("#groupe");
+const groupeMsg = document.querySelector("#groupe-msg");
+const groupeChamp = groupeInput.closest(".champ");
+
+groupes.forEach(function (groupe) {
+    const option = document.createElement("option");
+
+    option.value = groupe.id;
+    option.textContent = groupe.nom;
+
+    groupeInput.append(option);
+});
+
+groupeInput.addEventListener("change", function () {
+    if (groupeInput.value === "") {
+        groupeMsg.textContent = "Veuillez choisir un groupe.";
+        groupeChamp.classList.add("erreur");
+        groupeChamp.classList.remove("valide");
+        groupeMsg.classList.remove("hidden");
+
+        groupeInput.classList.add("border-alert");
+        groupeInput.classList.remove("border-ok");
+    } else {
+        groupeMsg.textContent = "Groupe valide.";
+        groupeChamp.classList.add("valide");
+        groupeChamp.classList.remove("erreur");
+        groupeInput.classList.add("border-ok");
+        groupeInput.classList.remove("border-alert");
+        groupeMsg.classList.remove("hidden");
+
+    }
+});
+
+const formEleve = document.querySelector("#form-eleve");
+const formSucces = document.querySelector("#form-succes");
+const formErreur = document.querySelector("#form-erreur");
+
+function formulaireValide() {
+    const champsValides = [
+        regexNom.test(prenomInput.value.trim()),
+        regexNom.test(nomInput.value.trim()),
+        groupeInput.value !== "",
+        regexEmail.test(emailInput.value.trim()),
+        regexTelephone.test(telephoneInput.value.trim()),
+        regexCode.test(codeInput.value)
+    ];
+
+    return champsValides.every(function (valide) {
+        return valide === true;
+    });
+}
+
+formEleve.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    if (!formulaireValide()) {
+        if (!regexNom.test(prenomInput.value.trim())) {
+            prenomInput.focus();
+        prenomMsg.textContent = "Veuillez remplir le prénom.";
+        prenomMsg.classList.remove("hidden");
+    
+        prenomChamp.classList.add("erreur");
+        prenomChamp.classList.remove("valide");
+        prenomInput.classList.remove("border-ok");
+        prenomInput.classList.add("border-alert");
+
+
+        } else if (!regexNom.test(nomInput.value.trim())) {
+            nomInput.focus();
+        nomMsg.textContent = "Veuillez remplir le nom.";
+        nomMsg.classList.remove("hidden");
+        nomChamp.classList.add("erreur");
+        nomChamp.classList.remove("valide");
+
+        nomInput.classList.remove("border-ok");
+        nomInput.classList.add("border-alert");
+
+
+        } else if (groupeInput.value === "") {
+            groupeInput.focus();
+            groupeMsg.textContent = "Veuillez choisir un groupe.";
+        groupeChamp.classList.add("erreur");
+        groupeChamp.classList.remove("valide");
+        groupeMsg.classList.remove("hidden");
+
+        groupeInput.classList.add("border-alert");
+        groupeInput.classList.remove("border-ok");
+
+
+        } else if (!regexEmail.test(emailInput.value.trim())) {
+            emailInput.focus();
+            emailMsg.textContent = "Veuillez remplir l'email.";
+        emailChamp.classList.add("erreur");
+        emailChamp.classList.remove("valide");
+        emailMsg.classList.remove("hidden");
+
+
+        emailInput.classList.remove("border-ok");
+        emailInput.classList.add("border-alert");
+        } else if (!regexTelephone.test(telephoneInput.value.trim())) {
+            telephoneInput.focus();
+            telephoneMsg.textContent = "Veuillez remplir le téléphone.";
+        telephoneMsg.classList.remove("hidden");
+        telephoneChamp.classList.add("erreur");
+        telephoneChamp.classList.remove("valide");
+
+        telephoneInput.classList.remove("border-ok");
+        telephoneInput.classList.add("border-alert");
+
+        } else if (!regexCode.test(codeInput.value)) {
+            codeInput.focus();
+            codeMsg.textContent = "Veuillez remplir le code.";
+
+        codeChamp.classList.add("erreur");
+        codeMsg.classList.remove("hidden");
+        codeChamp.classList.remove("valide");
+        codeInput.classList.remove("border-ok");
+        codeInput.classList.add("border-alert");
+
+        }
+
+        return;
+    }
+    const doublon = eleves.some(function (eleve) {
+        return (
+            eleve.prenom.trim().toLowerCase() === prenomInput.value.trim().toLowerCase() &&
+            eleve.nom.trim().toLowerCase() === nomInput.value.trim().toLowerCase() &&
+            eleve.groupeId === Number(groupeInput.value)
+        );
+    });
+
+    if (doublon) {
+        formErreur.textContent = "Cet élève existe déjà dans ce groupe.";
+        formErreur.hidden = false;
+        formSucces.hidden = true;        return;
+    }
+    console.log("Tous les champs sont valides !");
+
+    const nombreEleves = eleves.filter(function (eleve) {
+        return eleve.groupeId === Number(groupeInput.value);
+    }).length;
+
+    if (nombreEleves >= 15) {
+        formErreur.textContent = "Ce groupe est complet (15 élèves).";
+        formErreur.hidden = false;
+        formSucces.hidden = true;
+        return;
+    }
+
+    const nouvelEleve = {
+        id: Date.now(),
+        prenom: prenomInput.value.trim(),
+        nom: nomInput.value.trim(),
+        groupeId: Number(groupeInput.value),
+        email: emailInput.value.trim(),
+        telephone: telephoneInput.value.trim(),
+        absences: 0,
+        notes: []
+    };
+
+    eleves.push(nouvelEleve);
+
+    formSucces.hidden = false;
+    formErreur.hidden = true;   
+
+    formEleve.reset();
+    reinitialiserValidation()
+    afficherEleves();
+
+});
+
+function reinitialiserValidation() {
+
+    const champs = [
+        [prenomInput, prenomChamp, prenomMsg],
+        [nomInput, nomChamp, nomMsg],
+        [emailInput, emailChamp, emailMsg],
+        [telephoneInput, telephoneChamp, telephoneMsg],
+        [codeInput, codeChamp, codeMsg],
+        [groupeInput, groupeChamp, groupeMsg]
+    ];
+
+    champs.forEach(function ([input, champ, message]) {
+        champ.classList.remove("erreur", "valide");
+        input.classList.remove("border-alert", "border-ok");
+        message.classList.add("hidden");
+    });
+
+    codeForce.value = 0;
+
+    codeInput.type = "password";
+    toggleCode.textContent = "👁️";
+}
